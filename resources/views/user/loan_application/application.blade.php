@@ -13,10 +13,18 @@
                         <label for="amount" class="block text-gray-700 font-medium">Loan Amount</label>
                         <input type="text" id="amount" name="amount" placeholder="Enter loan amount" oninput="calculateInstallment()" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
                     </div>
+                
                     <div class="col-span-2 sm:col-span-1">
                         <label for="bank" class="block text-gray-700 font-medium">Bank</label>
-                        <input type="text" id="bank" name="bank" placeholder="Enter bank name" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <select id="bank" name="bank" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                            <option selected>Select bank</option>
+                            @foreach ( $bankNames as $bankName )
+                            <option value="{{ $bankName }}">{{ $bankName }}</option>                               
+                            @endforeach
+                        </select>
                     </div>
+
+
                     <div class="col-span-2 sm:col-span-1">
                         <label for="account_no" class="block text-gray-700 font-medium">Account Number</label>
                         <input type="text" id="account_no" name="account_no" placeholder="Enter account number" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">

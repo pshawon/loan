@@ -27,7 +27,26 @@ class LoanController extends Controller
 
     public function loanApplication (){
         $loan_types= LoanTypes::all();
-        return view ('user.loan_application.application',compact('loan_types'));
+                // Path to your JSON file
+                $jsonPath = storage_path('app/data.json');
+
+                // Check if the file exists
+                if (!file_exists($jsonPath)) {
+                    abort(404, 'File not found');
+                }
+        
+                // Get the JSON content
+                $jsonContent = file_get_contents($jsonPath);
+        
+                // Decode the JSON content to an associative array
+                $dataArray = json_decode($jsonContent, true);
+        
+                // Extract only the BankName field
+                $bankNames = array_column($dataArray, 'BankName');
+        
+                // Combine loan types and bank names
+                // $loan_types['bank'] = $bankNames;
+        return view ('user.loan_application.application',compact('loan_types','bankNames'));
     }
 
     public function loanStore (Request $request){

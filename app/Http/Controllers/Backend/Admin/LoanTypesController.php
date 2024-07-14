@@ -17,10 +17,16 @@ class LoanTypesController extends Controller
     public function addLoanTypes( Request $request){
         $validateData= $request->validate([
             'loanType' => 'required',
+            'interestRate' => 'required',
         ]);
         $loan_type= new LoanTypes();
-        $loan_type->name= $validateData['loanType'];
-        $loan_type->save();
+        $loan_type-> insert ([
+            'name' => $validateData['loanType'],
+            'interest_rate' => $validateData['interestRate'],
+            'created_at' => now(),
+            'updated_at' => now(),
+
+        ]);      
         toastr()->success('Loan Type has been added successfully!');
         return redirect()->back();
 
@@ -45,10 +51,12 @@ class LoanTypesController extends Controller
         $loanType= LoanTypes::findOrFail($id);
         $validateData= $request->validate([
             'loanType' => 'required',
+            'interestRate' => 'required',
         ]);
 
         $loanType-> update ([
             'name' => $validateData['loanType'],
+            'interest_rate' => $validateData['interestRate'],
         ]);
         
         toastr()->success('Loan Type has been updated successfully!');
