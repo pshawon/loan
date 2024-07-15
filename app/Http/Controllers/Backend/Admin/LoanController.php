@@ -42,6 +42,37 @@ class LoanController extends Controller
     }
 
     public function loanStore (Request $request){
+
+
+        $loan_type = LoanTypes :: findOrFail($request->loan_type);
+        if ( $request -> interest_rate != $loan_type -> interest_rate) {
+            return redirect()->back()->withErrors(['interest_rate' => 'Interest rate is invalid.']);
+
+        }
+
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'bank' => 'required',
+            'account_no' => 'required|integer|min:1',
+            'installment_counts' => 'required|integer|min:1',
+            'installment_amount' => 'required|numeric',
+            'amount_payable' => 'required|numeric',
+        ]);
+
+        $amount = $request->amount;
+        $installmentCounts = $request->installment_counts;
+        $interestRate = $loan_type->interest_rate;
+
+        $expectedInstallmentAmount = ($amount * (1 + $interestRate / 100)) / $installmentCounts;
+        $expectedAmountPayable = $amount * (1 + $interestRate / 100);
+
+        if (abs($request->installment_amount - $expectedInstallmentAmount) > 0.01 ||
+            abs($request->amount_payable - $expectedAmountPayable) > 0.01) {
+            return redirect()->back()->withErrors(['calculation' => 'Calculated values are invalid.']);
+        }
+
+
+
         $id= Auth::user()->id;
         $data= User::find ($id);
         $today= Carbon::now();
