@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="flex flex-col h-screen bg-gray-100">
-        
+
 
         <!-- Header -->
         @include('user.sections.header')
@@ -34,7 +34,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
-   
+
     <script>
         const profileButton = document.getElementById('profileButton');
         const profileDropdown = document.getElementById('profileDropdown');
@@ -73,27 +73,45 @@
 
 
 <script>
-      function calculateInstallment() {
-            const amountInput = document.getElementById('amount');
-            const installmentCountsInput = document.getElementById('installment_counts');
-            const installmentAmountInput = document.getElementById('installment_amount');
-            const amountPlusTenPercentInput = document.getElementById('amount_plus_ten_percent');
+    function calculateInstallment() {
+        const amountInput = document.getElementById('amount');
+        const installmentCountsInput = document.getElementById('installment_counts');
+        const installmentAmountInput = document.getElementById('installment_amount');
+        const amountPayableInput = document.getElementById('amount_payable');
+        const loanTypeSelect = document.getElementById('loan_type');
+        const interestRateInput = document.getElementById('interest_rate');
 
-            const amountValue = parseFloat(amountInput.value);
-            const installmentCountsValue = parseFloat(installmentCountsInput.value);
+        const amountValue = parseFloat(amountInput.value);
+        const installmentCountsValue = parseFloat(installmentCountsInput.value);
+        const interestRateValue = parseFloat(interestRateInput.value);
 
-            if (!isNaN(amountValue) && !isNaN(installmentCountsValue) && installmentCountsValue !== 0) {
-                const installmentAmountValue = (amountValue * 1.1) / installmentCountsValue;
-                const amountPlusTenPercentValue = amountValue * 1.1;
+        loanTypeSelect.addEventListener('change', function() {
+            var selectedOption = loanTypeSelect.options[loanTypeSelect.selectedIndex];
+            var interestRate = selectedOption.getAttribute('data-interest-rate');
+            interestRateInput.value = interestRate ? interestRate : '';
+            calculateInstallment();
+        });
 
-                installmentAmountInput.value = installmentAmountValue.toFixed(2);
-                amountPlusTenPercentInput.value = amountPlusTenPercentValue.toFixed(2);
-            } else {
-                installmentAmountInput.value = '';
-                amountPlusTenPercentInput.value = '';
-            }
+        interestRateInput.addEventListener('input', calculateInstallment);
+
+        if (!isNaN(amountValue) && !isNaN(installmentCountsValue) && installmentCountsValue !== 0 && !isNaN(interestRateValue)) {
+            const installmentAmountValue = (amountValue * (1 + interestRateValue / 100)) / installmentCountsValue;
+            const amountPayableValue = amountValue * (1 + interestRateValue / 100);
+
+            installmentAmountInput.value = installmentAmountValue.toFixed(2);
+            amountPayableInput.value = amountPayableValue.toFixed(2);
+        } else {
+            installmentAmountInput.value = '';
+            amountPayableInput.value = '';
         }
+    }
+
+    // Ensure initial call to set up event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        calculateInstallment();
+    });
 </script>
-  
+
+
 </body>
 </html>

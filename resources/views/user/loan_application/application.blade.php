@@ -13,13 +13,13 @@
                         <label for="amount" class="block text-gray-700 font-medium">Loan Amount</label>
                         <input type="text" id="amount" name="amount" placeholder="Enter loan amount" oninput="calculateInstallment()" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
                     </div>
-                
+
                     <div class="col-span-2 sm:col-span-1">
                         <label for="bank" class="block text-gray-700 font-medium">Bank</label>
                         <select id="bank" name="bank" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
                             <option selected>Select bank</option>
                             @foreach ( $bankNames as $bankName )
-                            <option value="{{ $bankName }}">{{ $bankName }}</option>                               
+                            <option value="{{ $bankName }}">{{ $bankName }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -34,23 +34,30 @@
                         <select id="loan_type" name="loan_type" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
                             <option selected>Select Loan Type</option>
                             @foreach ( $loan_types as $lt )
-                            <option value="{{ $lt->id }}"> {{ $lt->name }}</option>
-                                
+                            <option value="{{ $lt->id }}" data-interest-rate="{{ $lt->interest_rate }}"> {{ $lt->name }}</option>
+
                             @endforeach
-                            
+
                         </select>
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="amount" class="block text-gray-700 font-medium">Installment Count</label>
                         <input type="text" id="installment_counts" name="installment_counts" placeholder="Installment Count" oninput="calculateInstallment()" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
                     </div>
+
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="interest_rate" class="block text-gray-700 font-medium">Interest Rate</label>
+                        <input type="text" id="interest_rate" name="interest_rate" value=""  placeholder="Interest Rate"  class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" readonly>
+                    </div>
+
+
                     <div class="col-span-2 sm:col-span-1">
                         <label for="bank" class="block text-gray-700 font-medium">Installment Amount</label>
-                        <input type="text" id="installment_amount" name="installment_amount" placeholder="Installment Amount" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <input type="text" id="installment_amount" name="installment_amount" placeholder="Installment Amount" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" readonly>
                     </div>
                     <div class="col-span-2 sm:col-span-1">
-                        <label for="bank" class="block text-gray-700 font-medium">Amount (+10% Interest)</label>
-                        <input type="text" id="amount_plus_ten_percent" name="amount_payable" placeholder="Amount (+10%)"  class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <label for="bank" class="block text-gray-700 font-medium">Amount (+ Interest)</label>
+                        <input type="text" id="amount_payable" name="amount_payable" placeholder="Amount (+10%)"  class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" readonly>
                     </div>
                     <!-- Other input fields ... -->
                 </div>
