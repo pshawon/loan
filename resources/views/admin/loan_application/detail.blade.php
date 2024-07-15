@@ -71,15 +71,15 @@ input:checked + .slider:before {
             <hr class="my-4 border-t border-gray-300">
             <div>
                 <h3 class="text-xl font-semibold mb-2"><u>User Details</u></h3>
-                <h4 class="text-xl font-semibold mb-2">Amount: {{$loan-> amount}}</h4>
                 <h4 class="text-xl font-semibold mb-2">Bank: <u>{{$loan-> bank}}</u></h4>
+                <h4 class="text-xl font-semibold mb-2">Amount: {{$loan-> amount}}</h4>
                 <h4 class="text-xl font-semibold mb-2">Account No: <u>{{ $loan-> account}}</u></h4>
-                <h4 class="text-xl font-semibold mb-2">Status: {{ $loan->status}}</h4>
+                <h4 class="text-xl font-semibold mb-2">Interest Rate: {{ $interest_rate}}</h4>
                 <h4 class="text-xl font-semibold mb-2">Installment: {{ $loan->installment_amount}}</h4>
                 <h4 class="text-xl font-semibold mb-2">Status: {{ $loan->status}}</h4>
                 <h4 class="text-xl font-semibold mb-2">Amount + Interest: {{ $loan->amount_payable}}</h4>
 
-                
+
             </div>
         </div>
     </div>

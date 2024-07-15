@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                     @foreach ($loan_type as $key => $lt )
-                    @csrf                  
+                    @csrf
 
                     <!-- Loop through the records and display them in the table -->
                     <tr>

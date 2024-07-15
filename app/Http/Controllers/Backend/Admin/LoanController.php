@@ -15,7 +15,8 @@ class LoanController extends Controller
 {
     public function allLoanApplications (){
 
-        $loan= DB::table('loan_applications')->where('status','not_approved')->get();
+        // $loan= DB::table('loan_applications')->where('status','not_approved')->get();
+        $loan= DB::table('loan_applications')->get();
         return view('admin.loan_application.all',compact('loan'));
     }
 
@@ -42,14 +43,6 @@ class LoanController extends Controller
     }
 
     public function loanStore (Request $request){
-
-
-        $loan_type = LoanTypes :: findOrFail($request->loan_type);
-        if ( $request -> interest_rate != $loan_type -> interest_rate) {
-            return redirect()->back()->withErrors(['interest_rate' => 'Interest rate is invalid.']);
-
-        }
-
         $request->validate([
             'amount' => 'required|numeric|min:1',
             'bank' => 'required',
@@ -58,6 +51,12 @@ class LoanController extends Controller
             'installment_amount' => 'required|numeric',
             'amount_payable' => 'required|numeric',
         ]);
+
+        $loan_type = LoanTypes :: findOrFail($request->loan_type);
+        if ( $request -> interest_rate != $loan_type -> interest_rate) {
+            return redirect()->back()->withErrors(['interest_rate' => 'Interest rate is invalid.']);
+
+        }
 
         $amount = $request->amount;
         $installmentCounts = $request->installment_counts;
@@ -98,7 +97,9 @@ class LoanController extends Controller
     public function loanDetail($id){
 
         $loan= LoanApplication::findOrFail($id);
-        return view('admin.loan_application.detail',compact('loan'));
+        $loanType= LoanTypes::findOrFail($loan->loan_type);
+        $interest_rate= $loanType->interest_rate;
+        return view('admin.loan_application.detail',compact('loan','interest_rate'));
 
 
     }

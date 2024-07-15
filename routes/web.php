@@ -37,10 +37,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     route ::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    route ::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile'); 
-    route ::post('/admin/update/profile', [AdminController::class, 'updateProfile'])->name('admin.profile.update'); 
-    route ::get('/admin/update/password', [AdminController::class, 'updatePassword'])->name('admin.password.update'); 
-    route ::post('/admin/store/password', [AdminController::class, 'storePassword'])->name('admin.password.store'); 
+    route ::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    route ::post('/admin/update/profile', [AdminController::class, 'updateProfile'])->name('admin.profile.update');
+    route ::get('/admin/update/password', [AdminController::class, 'updatePassword'])->name('admin.password.update');
+    route ::post('/admin/store/password', [AdminController::class, 'storePassword'])->name('admin.password.store');
 
     route ::get('/admin/all/users', [UsersController::class, 'allUsers'])->name('admin.all.users');
     route::delete('/admin/delete/{user}', [UsersController::class, 'deleteUser'])->name('delete.user');
@@ -60,23 +60,23 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     route ::get('/admin/all/approved/loans', [LoanController::class, 'allApprovedLoans'])->name('admin.all.approved.loans');
     route::get('/admin/loan/detail/{id}',[LoanController::class,'loanDetail'])->name('loan.detail');
     route::post('/admin/loan/{id}/toggle-status', [LoanController::class, 'toggleStatus'])->name('loan.toggle-status');
-    
+
 
 
 });
 
 Route::middleware(['auth', 'role:user'])->group(function () {
-    route ::get('/user/dashboard', [UserController::class, 'index'])->name('user.dashboard'); 
+    route ::get('/user/dashboard', [UserController::class, 'index'])->name('user.dashboard');
     route ::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');
-    route ::post('/user/update/profile', [UserController::class, 'updateProfile'])->name('user.profile.update'); 
-    route ::get('/user/update/password', [UserController::class, 'updatePassword'])->name('user.password.update'); 
+    route ::post('/user/update/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
+    route ::get('/user/update/password', [UserController::class, 'updatePassword'])->name('user.password.update');
     route ::post('/user/store/password', [UserController::class, 'storePassword'])->name('user.password.store');
-    
-    route ::get('/user/loan/application', [LoanController::class, 'loanApplication'])->name('user.loan.application'); 
-    route ::post('/user/loan/store', [LoanController::class, 'loanStore'])->name('user.loan.store'); 
-    route ::get('/user/approved/loan', [LoanController::class, 'approvedLoan'])->name('user.approved.loan'); 
 
-    
+    route ::get('/user/loan/application', [LoanController::class, 'loanApplication'])->name('user.loan.application');
+    route ::post('/user/loan/store', [LoanController::class, 'loanStore'])->name('user.loan.store');
+    route ::get('/user/approved/loan', [LoanController::class, 'approvedLoan'])->name('user.approved.loan');
+
+
 
 
 });

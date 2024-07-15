@@ -23,7 +23,8 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2 sm:col-span-1">
                         <label for="amount" class="block text-gray-700 font-medium">Loan Amount</label>
-                        <input type="text" id="amount" name="amount" placeholder="Enter loan amount" oninput="calculateInstallment()" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <input type="text" id="amount" name="amount" value="{{ old('amount') }}" placeholder="Enter loan amount" oninput="calculateInstallment()" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <span class="text-red-600">{{ $errors->has('amount') ? $errors->first('amount') : ''}}</span>
                     </div>
 
                     <div class="col-span-2 sm:col-span-1">
@@ -43,7 +44,7 @@
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="loan_type" class="block text-gray-700 font-medium">Loan Type</label>
-                        <select id="loan_type" name="loan_type" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <select id="loan_type" name="loan_type" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" onchange="myFunction()">
                             <option selected>Select Loan Type</option>
                             @foreach ( $loan_types as $lt )
                             <option value="{{ $lt->id }}" data-interest-rate="{{ $lt->interest_rate }}"> {{ $lt->name }}</option>
@@ -54,7 +55,8 @@
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="amount" class="block text-gray-700 font-medium">Installment Count</label>
-                        <input type="text" id="installment_counts" name="installment_counts" placeholder="Installment Count" oninput="calculateInstallment()" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <input type="text" id="installment_counts" name="installment_counts" placeholder="Installment Count" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+
                     </div>
 
                     <div class="col-span-2 sm:col-span-1">
