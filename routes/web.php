@@ -61,6 +61,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     route::get('/admin/loan/detail/{id}',[LoanController::class,'loanDetail'])->name('loan.detail');
     route::post('/admin/loan/{id}/toggle-status', [LoanController::class, 'toggleStatus'])->name('loan.toggle-status');
 
+    route::delete('/admin/loan/delete/{loan}', [LoanController::class, 'deleteLoanApplication'])->name('delete.loan.application');
+
+
 
 
 });

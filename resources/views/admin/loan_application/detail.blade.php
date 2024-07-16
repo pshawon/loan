@@ -76,7 +76,23 @@ input:checked + .slider:before {
                 <h4 class="text-xl font-semibold mb-2">Account No: <u>{{ $loan-> account}}</u></h4>
                 <h4 class="text-xl font-semibold mb-2">Interest Rate: {{ $interest_rate}}</h4>
                 <h4 class="text-xl font-semibold mb-2">Installment: {{ $loan->installment_amount}}</h4>
-                <h4 class="text-xl font-semibold mb-2">Status: {{ $loan->status}}</h4>
+                <h4 class="text-xl font-semibold mb-2">Status:
+                @if ($loan->status == 'approved')
+                        <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.1 rounded-full dark:bg-green-900 dark:text-green-300">
+                            <span class="w-2 h-2  bg-green-500 rounded-full"></span>
+                            Approved
+                        </span>
+
+                  @endif
+
+                  @if ($loan->status == 'not_approved')
+                        <span class="inline-flex items-center bg-yellow-100 text-green-800 text-xs font-medium px-2.5 py-0.1 rounded-full dark:bg-green-900 dark:text-green-300">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                            Pending
+                        </span>
+                  @endif
+                </h4>
+
                 <h4 class="text-xl font-semibold mb-2">Amount + Interest: {{ $loan->amount_payable}}</h4>
 
 

@@ -9,7 +9,15 @@
             <form action="{{ route('user.loan.store') }}" method="POST">
                 @csrf
 
-                @if ($errors->any())
+                @if ($errors->has('calculation'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                                <li>{{ $errors->first('calculation') }}</li>
+                        </ul>
+                    </div>
+                @endif
+
+                {{-- @if ($errors->any())
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                         <span class="block sm:inline">There were some problems with your input.</span>
                         <ul class="mt-3 list-disc list-inside text-sm text-red-600">
@@ -18,7 +26,7 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif
+                @endif --}}
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2 sm:col-span-1">
@@ -30,17 +38,19 @@
                     <div class="col-span-2 sm:col-span-1">
                         <label for="bank" class="block text-gray-700 font-medium">Bank</label>
                         <select id="bank" name="bank" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
-                            <option selected>Select bank</option>
+                            <option value="" selected>Select bank</option>
                             @foreach ( $bankNames as $bankName )
                             <option value="{{ $bankName }}">{{ $bankName }}</option>
                             @endforeach
                         </select>
+                        <span class="text-red-600">{{ $errors->has('bank') ? $errors->first('bank') : ''}}</span>
                     </div>
 
 
                     <div class="col-span-2 sm:col-span-1">
                         <label for="account_no" class="block text-gray-700 font-medium">Account Number</label>
-                        <input type="text" id="account_no" name="account_no" placeholder="Enter account number" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <input type="text" id="account_no" name="account_no" value="{{ old('account_no') }}" placeholder="Enter account number" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
+                        <span class="text-red-600">{{ $errors->has('account_no') ? $errors->first('account_no') : ''}}</span>
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="loan_type" class="block text-gray-700 font-medium">Loan Type</label>
@@ -55,23 +65,26 @@
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="amount" class="block text-gray-700 font-medium">Installment Count</label>
-                        <input type="text" id="installment_counts" name="installment_counts" placeholder="Installment Count" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300">
-
+                        <input type="text" id="installment_counts" name="installment_counts" value="{{ old('installment_counts') }}" placeholder="Installment Count" class="bg-gray-200 p-2 mt-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" oninput="calculateInstallment()">
+                        <span class="text-red-600">{{ $errors->has('installment_counts') ? $errors->first('installment_counts') : ''}}</span>
                     </div>
 
                     <div class="col-span-2 sm:col-span-1">
                         <label for="interest_rate" class="block text-gray-700 font-medium">Interest Rate</label>
-                        <input type="text" id="interest_rate" name="interest_rate" value=""  placeholder="Interest Rate"  class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" readonly>
+                        <input type="text" id="interest_rate" name="interest_rate" value=""  placeholder="Interest Rate"  class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" oninput="calculateInstallment()" readonly>
+                        <span class="text-red-600">{{ $errors->has('interest_rate') ? $errors->first('interest_rate') : ''}}</span>
                     </div>
 
 
                     <div class="col-span-2 sm:col-span-1">
                         <label for="bank" class="block text-gray-700 font-medium">Installment Amount</label>
-                        <input type="text" id="installment_amount" name="installment_amount" placeholder="Installment Amount" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" readonly>
+                        <input type="text" id="installment_amount" name="installment_amount" placeholder="Installment Amount" class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" oninput="calculateInstallment()" readonly>
+                        <span class="text-red-600">{{ $errors->has('installment_amount') ? $errors->first('installment_amount') : ''}}</span>
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="bank" class="block text-gray-700 font-medium">Amount (+ Interest)</label>
-                        <input type="text" id="amount_payable" name="amount_payable" placeholder="Amount (+10%)"  class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" readonly>
+                        <input type="text" id="amount_payable" name="amount_payable" placeholder="Amount (+10%)"  class="bg-gray-200 p-2 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-300" oninput="calculateInstallment()" readonly>
+                        <span class="text-red-600">{{ $errors->has('amount_payable') ? $errors->first('amount_payable') : ''}}</span>
                     </div>
                     <!-- Other input fields ... -->
                 </div>

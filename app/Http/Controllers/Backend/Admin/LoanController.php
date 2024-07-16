@@ -121,4 +121,12 @@ class LoanController extends Controller
         return view('user.loan_application.approved',compact('loan'));
 
     }
+
+    public function deleteLoanApplication($loan){
+        $loan= LoanApplication::findOrFail($loan);
+        $loan->delete();
+        toastr ()->success('Loan Application Deleted Successfully','Congrats');
+        return redirect()->back();
+
+    }
 }

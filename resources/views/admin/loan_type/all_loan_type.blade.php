@@ -38,7 +38,8 @@
                         <td class="px-4 py-2 text-center">{{ $lt -> name}}</td>
                         <td class="px-4 py-2 text-center">{{ $lt -> interest_rate}}</td>
                         <td class="px-4 py-2 text-center">
-                            <a href="{{ route('admin.edit.loan-type', $lt->id)}}" class="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50">Update</a>
+                        <a href="{{ route('admin.edit.loan-type', $lt->id)}}" class="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50">Update</a>
+
 
 
                             <button type="submit" onclick="confirmDeleteLoanType({{ $lt->id}})" class="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50">Delete</button>

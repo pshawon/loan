@@ -111,13 +111,13 @@
         calculateInstallment();
     });
 
-    function myFunction() {
-        var a = document.getElementById('loan_type');
-        var x = a.options[a.selectedIndex].value
+    // function myFunction() {
+    //     var a = document.getElementById('loan_type');
+    //     var x = a.options[a.selectedIndex].value
 
-        document.getElementById("interest_rate").value = x;
+    //     document.getElementById("interest_rate").value = x;
 
-    }
+    // }
 </script>
 
 

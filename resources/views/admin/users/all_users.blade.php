@@ -54,25 +54,25 @@ input:checked + .slider:before {
         <table class="min-w-full table-auto border">
           <thead>
             <tr class="bg-gray-200">
-              <th class="py-2 px-4">ID</th>
-              <th class="py-2 px-4">Name</th>
-              <th class="py-2 px-4">Email</th>
-              <th class="py-2 px-4">User Type</th>
-              <th class="py-2 px-4">Make Admin</th>
-              <th class="py-2 px-4">Action</th>
+              <th class="py-2 px-4 text-center">ID</th>
+              <th class="py-2 px-4 text-center">Name</th>
+              <th class="py-2 px-4 text-center">Email</th>
+              <th class="py-2 px-4 text-center">User Type</th>
+              <th class="py-2 px-4 text-center">Make Admin</th>
+              <th class="py-2 px-4 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
 
             @foreach ($users as $key => $user)
-              
+
                 <tr>
-                  <td class="py-2 px-4">{{ $key+1 }}</td>
-                  <td class="py-2 px-4">{{ $user->name }}</td>
-                  <td class="py-2 px-4">{{ $user->email }}</td>
-                  <td class="py-2 px-4">{{ $user->role }}</td>
-                  <td class="py-2 px-4">
-                    
+                  <td class="py-2 px-4 text-center">{{ $key+1 }}</td>
+                  <td class="py-2 px-4 text-center">{{ $user->name }}</td>
+                  <td class="py-2 px-4 text-center">{{ $user->email }}</td>
+                  <td class="py-2 px-4 text-center">{{ $user->role }}</td>
+                  <td class="py-2 px-4 text-center">
+
                     <form action="{{ route('user.toggle-role',$user->id)}}" method="POST">
                         @csrf
                         <label class="switch">
@@ -80,9 +80,9 @@ input:checked + .slider:before {
                           <span class="slider"></span>
                         </label>
                       </form>
-                      
+
                   </td>
-                  <td class="py-2 px-4">
+                  <td class="py-2 px-4 text-center">
                     <a href="{{ route('user.detail', $user->id) }}" class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition duration-200">View Details</a>
 
                     <button type="submit" onclick="confirmDelete({{ $user->id}})" class="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition duration-200 ml-2">Delete</button>
@@ -90,7 +90,7 @@ input:checked + .slider:before {
                       @csrf
                       @method('DELETE')
                     </form>
-              
+
                   </td>
                 </tr>
             @endforeach
