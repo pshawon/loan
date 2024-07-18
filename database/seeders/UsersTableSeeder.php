@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@example.com',
             'role' => 'admin',
             'status' => 'active',
-            'password' => bcrypt('password') , // password         
+            'password' => bcrypt('password') , // password
         ]);
         //Seed An regular USer
         User::create([
@@ -27,7 +27,14 @@ class UsersTableSeeder extends Seeder
             'email' => 'user@example.com',
             'role' => 'user',
             'status' => 'active',
-            'password' => bcrypt('password') , // password         
+            'password' => bcrypt('password') , // password
+        ]);
+        User::create([
+            'name' => 'Super admin User',
+            'email' => 'superadmin@example.com',
+            'role' => 'super_admin',
+            'status' => 'active',
+            'password' => bcrypt('password') , // password
         ]);
     }
 }

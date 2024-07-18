@@ -19,6 +19,9 @@ class CheckRole
             return redirect()->route('login');
 
         }
+        if ($request->user()->role !== $role) {
+            return redirect('/'); // Redirect to home or another appropriate page
+        }
         return $next($request);
     }
 }

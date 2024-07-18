@@ -129,4 +129,14 @@ class LoanController extends Controller
         return redirect()->back();
 
     }
+
+    public function search(Request $request)
+{
+    $column = $request->column;
+    $value = $request->value;
+
+    $loans = LoanApplication::where($column, 'LIKE', "%$value%")->get();
+
+    return response()->json(['loans' => $loans]);
+}
 }

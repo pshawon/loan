@@ -12,14 +12,14 @@
 
 
         <!-- Header -->
-        @include('admin.sections.header')
+        @include('super_admin.sections.header')
 
         <!-- Main Content -->
         <div class="flex-1">
             <div class="flex h-full">
 
                 <!-- Sidebar -->
-               @include('admin.sections.sidebar')
+               @include('super_admin.sections.sidebar')
 
                 <!-- Page content -->
                 <div class="flex-1 p-10">
@@ -30,7 +30,7 @@
         </div>
 
         <!-- Footer -->
-        @include('admin.sections.footer')
+        @include('super_admin.sections.footer')
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>

@@ -114,7 +114,7 @@ input:checked + .slider:before {
                   <td class="text-center" style="display: flex; justify-content: center; align-items: center;">
                  <a href="{{ route('loan.detail', $ln->id) }}" class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition duration-200">View Details</a>
 
-                    <button type="submit" onclick="confirmDelete({{ $ln->id}})" class="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition duration-200 ml-2">Delete</button>
+                    <button type="submit" onclick="confirmDeleteLoanType({{ $ln->id}})" class="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition duration-200 ml-2">Delete</button>
                     <form id="delete-form-{{ $ln->id }}" action="{{ route('delete.loan.application', $ln->id)}}" method="POST" >
                       @csrf
                       @method('DELETE')

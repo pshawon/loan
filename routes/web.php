@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\Admin\UsersController;
 use App\Http\Controllers\Backend\Admin\LoanTypesController;
 use App\Http\Controllers\Backend\Admin\LoanController;
+use App\Http\Controllers\Backend\SuperAdmin\SuperAdminController;
 
 
 
@@ -78,6 +79,27 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     route ::get('/user/loan/application', [LoanController::class, 'loanApplication'])->name('user.loan.application');
     route ::post('/user/loan/store', [LoanController::class, 'loanStore'])->name('user.loan.store');
     route ::get('/user/approved/loan', [LoanController::class, 'approvedLoan'])->name('user.approved.loan');
+
+
+
+
+});
+
+Route::middleware(['auth', 'role:super_admin'])->group(function () {
+    route ::get('/super_admin/dashboard', [SuperAdminController::class, 'index'])->name('super_admin.dashboard');
+
+    route ::get('/super_admin/profile', [SuperAdminController::class, 'profile'])->name('super_admin.profile');
+    route ::post('/super_admin/update/profile', [SuperAdminController::class, 'updateProfile'])->name('super_admin.profile.update');
+    route ::get('/super_admin/update/password', [SuperAdminController::class, 'updatePassword'])->name('super_admin.password.update');
+    route ::post('/super_admin/store/password', [SuperAdminController::class, 'storePassword'])->name('super_admin.password.store');
+    route ::get('/super_admin/all/users', [SuperAdminController::class, 'allUsers'])->name('super_admin.all.users');
+    route::delete('/super_admin/delete/{user}', [SuperAdminController::class, 'deleteUser'])->name('delete.user');
+    route::get('/super_admin/user/detail/{id}',[SuperAdminController::class,'userDetail'])->name('user.detail');
+    route::post('/super_admin/user/{id}/toggle-role', [SuperAdminController::class, 'toggleRole'])->name('user.toggle-role');
+    route::post('/super_admin/user/{id}/toggle-status', [SuperAdminController::class, 'toggleStatus'])->name('user.toggle-status');
+
+
+
 
 
 

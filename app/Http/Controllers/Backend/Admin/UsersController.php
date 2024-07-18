@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 
 
 class UsersController extends Controller
 {
     public function allUsers (){
         $users= User::all();
+        $users = $users->filter(function($users) {
+            return $users->id !== Auth::id();
+        });
         return view('admin.users.all_users',compact('users'));
 
     }
@@ -52,5 +56,5 @@ class UsersController extends Controller
 
     }
 
-    
+
 }
