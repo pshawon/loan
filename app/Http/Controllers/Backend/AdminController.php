@@ -20,7 +20,7 @@ class AdminController extends Controller
     public function updateProfile (Request $request){
         $request -> validate([
             'name'=>'required',
-            'phone'=>'required|regex:/(01)[0-9]{9}/', 
+            'phone'=>'required|regex:/(01)[0-9]{9}/',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5048',
         ]);
         $user= Auth::User();

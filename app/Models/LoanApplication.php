@@ -9,6 +9,15 @@ class LoanApplication extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'email',
+        'amount',
+        'bank',
+        'account',
+        'status',
+    ];
+
     protected $guarded = [];
     public function loan_type (){
         return $this->belongsTo(LoanTypes::class);

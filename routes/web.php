@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\Admin\UsersController;
 use App\Http\Controllers\Backend\Admin\LoanTypesController;
 use App\Http\Controllers\Backend\Admin\LoanController;
 use App\Http\Controllers\Backend\SuperAdmin\SuperAdminController;
+use App\Http\Controllers\Backend\SuperAdmin\SuperAdminLoanController;
 
 
 
@@ -61,7 +62,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     route ::get('/admin/all/approved/loans', [LoanController::class, 'allApprovedLoans'])->name('admin.all.approved.loans');
     route::get('/admin/loan/detail/{id}',[LoanController::class,'loanDetail'])->name('loan.detail');
     route::post('/admin/loan/{id}/toggle-status', [LoanController::class, 'toggleStatus'])->name('loan.toggle-status');
-
     route::delete('/admin/loan/delete/{loan}', [LoanController::class, 'deleteLoanApplication'])->name('delete.loan.application');
 
 
@@ -92,11 +92,19 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     route ::post('/super_admin/update/profile', [SuperAdminController::class, 'updateProfile'])->name('super_admin.profile.update');
     route ::get('/super_admin/update/password', [SuperAdminController::class, 'updatePassword'])->name('super_admin.password.update');
     route ::post('/super_admin/store/password', [SuperAdminController::class, 'storePassword'])->name('super_admin.password.store');
+
+
     route ::get('/super_admin/all/users', [SuperAdminController::class, 'allUsers'])->name('super_admin.all.users');
     route::delete('/super_admin/delete/{user}', [SuperAdminController::class, 'deleteUser'])->name('delete.user');
     route::get('/super_admin/user/detail/{id}',[SuperAdminController::class,'userDetail'])->name('user.detail');
     route::post('/super_admin/user/{id}/toggle-role', [SuperAdminController::class, 'toggleRole'])->name('user.toggle-role');
     route::post('/super_admin/user/{id}/toggle-status', [SuperAdminController::class, 'toggleStatus'])->name('user.toggle-status');
+
+    route ::get('/super_admin/all/loan/applications', [SuperAdminLoanController::class, 'allLoanApplications'])->name('super_admin.all.loan-applications');
+    // route ::get('/super_admin/all/approved/loans', [SuperAdminController::class, 'allApprovedLoans'])->name('super_admin.all.approved.loans');
+    // route::get('/super_admin/loan/detail/{id}',[SuperAdminController::class,'loanDetail'])->name('loan.detail');
+    // route::post('/super_admin/loan/{id}/toggle-status', [SuperAdminController::class, 'toggleStatus'])->name('super_admin.toggle-status');
+    // route::delete('/super_admin/loan/delete/{loan}', [SuperAdminController::class, 'deleteLoanApplication'])->name('super_admin.loan.application');
 
 
 

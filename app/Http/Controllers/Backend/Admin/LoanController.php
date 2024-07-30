@@ -13,12 +13,197 @@ use Carbon\Carbon;
 
 class LoanController extends Controller
 {
-    public function allLoanApplications (){
+    // public function allLoanApplications (){
 
-        // $loan= DB::table('loan_applications')->where('status','not_approved')->get();
-        $loan= DB::table('loan_applications')->get();
-        return view('admin.loan_application.all',compact('loan'));
+    //     // $loan= DB::table('loan_applications')->where('status','not_approved')->get();
+    //     $loan= DB::table('loan_applications')->get();
+    //     return view('admin.loan_application.all',compact('loan'));
+    // }
+
+    // public function allLoanApplications(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $columns = ['id', 'name', 'email', 'amount', 'bank', 'account', 'status'];
+
+    //         $totalData = LoanApplication::count();
+    //         $totalFiltered = $totalData;
+
+    //         $limit = $request->input('length');
+    //         $start = $request->input('start');
+    //         $order = $columns[$request->input('order.0.column')];
+    //         $dir = $request->input('order.0.dir');
+
+    //         if (empty($request->input('search.value'))) {
+    //             $loans = LoanApplication::offset($start)
+    //                 ->limit($limit)
+    //                 ->orderBy($order, $dir)
+    //                 ->get();
+    //         } else {
+    //             $search = $request->input('search.value');
+
+    //             $loans = LoanApplication::where(function($query) use ($search) {
+    //                 $query->where('name', 'LIKE', "%{$search}%")
+    //                       ->orWhere('email', 'LIKE', "%{$search}%")
+    //                       ->orWhere('amount', 'LIKE', "%{$search}%")
+    //                       ->orWhere('bank', 'LIKE', "%{$search}%")
+    //                       ->orWhere('account', 'LIKE', "%{$search}%");
+
+    //             })
+    //             ->offset($start)
+    //             ->limit($limit)
+    //             ->orderBy($order, $dir)
+    //             ->get();
+
+    //             $totalFiltered = LoanApplication::where(function($query) use ($search) {
+    //                 $query->where('name', 'LIKE', "%{$search}%")
+    //                       ->orWhere('email', 'LIKE', "%{$search}%")
+    //                       ->orWhere('amount', 'LIKE', "%{$search}%")
+    //                       ->orWhere('bank', 'LIKE', "%{$search}%")
+    //                       ->orWhere('account', 'LIKE', "%{$search}%");
+
+    //             })->count();
+    //         }
+
+    //         $data = [];
+    //         if (!empty($loans)) {
+    //             foreach ($loans as $loan) {
+    //                 $nestedData['id'] = $loan->id;
+    //                 $nestedData['name'] = $loan->name;
+    //                 $nestedData['email'] = $loan->email;
+    //                 $nestedData['amount'] = $loan->amount;
+    //                 $nestedData['bank'] = $loan->bank;
+    //                 $nestedData['account'] = $loan->account;
+    //                 // $nestedData['status'] = $loan->status;
+    //                 $nestedData['status'] = $this->formatStatus($loan->status);
+
+    //                 $viewBtn = '<a href="'.route('loan.detail', $loan->id).'" class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition duration-200">View Details</a>';
+    //                 $deleteBtn = '<button type="submit" onclick="confirmDeleteLoanType('.$loan->id.')" class="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition duration-200 ml-2">Delete</button>';
+    //                 $deleteForm = '<form id="delete-form-'.$loan->id.'" action="'.route('delete.loan.application', $loan->id).'" method="POST" style="display:none;">'.csrf_field().method_field('DELETE').'</form>';
+    //                 $nestedData['action'] = $viewBtn . $deleteBtn . $deleteForm;
+
+    //                 $checked = ($loan->status === 'approved') ? 'checked' : '';
+    //                 $nestedData['approve'] = '<form action="'.route('loan.toggle-status', $loan->id).'" method="POST">'.csrf_field().'<label class="switch"><input type="checkbox" name="status" onchange="this.form.submit()" '.$checked.'><span class="slider"></span></label></form>';
+
+    //                 $data[] = $nestedData;
+    //             }
+    //         }
+
+
+    //         $json_data = [
+    //             "draw" => intval($request->input('draw')),
+    //             "recordsTotal" => intval($totalData),
+    //             "recordsFiltered" => intval($totalFiltered),
+    //             "data" => $data
+    //         ];
+
+    //         return response()->json($json_data);
+    //     }
+
+
+
+    //     return view('admin.loan_application.all');
+    // }
+
+    public function allLoanApplications(Request $request){
+
+    if ($request->ajax()) {
+        $columns = ['id', 'name', 'email', 'amount', 'bank', 'account', 'status'];
+
+        $totalData = LoanApplication::count();
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        $column = $request->input('column');
+        $search = $request->input('search');
+        $status= $request -> input('status');
+
+
+
+        $query = LoanApplication::query();
+
+        if ($status !== 'all') {
+            $query->where('status', $status === 'approved' ? 'approved' : 'not_approved');
+        }
+
+        if (!empty($search)) {
+            $query->where(function($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                      ->orWhere('email', 'LIKE', "%{$search}%")
+                      ->orWhere('amount', 'LIKE', "%{$search}%")
+                      ->orWhere('bank', 'LIKE', "%{$search}%")
+                      ->orWhere('account', 'LIKE', "%{$search}%");
+            });
+            $totalFiltered = $query->count();
+        }
+
+        $loans = $query->offset($start)
+            ->limit($limit)
+            ->orderBy($order, $dir)
+            ->get();
+
+        $data = [];
+        $serialNumber = $start + 1;
+
+        if (!empty($loans)) {
+            foreach ($loans as $key => $loan) {
+
+                $nestedData['id'] = $serialNumber++ ;
+                $nestedData['name'] = $loan->name;
+                $nestedData['email'] = $loan->email;
+                $nestedData['amount'] = $loan->amount;
+                $nestedData['bank'] = $loan->bank;
+                $nestedData['account'] = $loan->account;
+                $nestedData['status'] = $this->formatStatus($loan->status);
+
+                $viewBtn = '<a href="'.route('loan.detail', $loan->id).'" class="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition duration-200">View Details</a>';
+                $deleteBtn = '<button type="submit" onclick="confirmDeleteLoanType('.$loan->id.')" class="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition duration-200 ml-2">Delete</button>';
+                $deleteForm = '<form id="delete-form-'.$loan->id.'" action="'.route('delete.loan.application', $loan->id).'" method="POST" style="display:none;">'.csrf_field().method_field('DELETE').'</form>';
+                $nestedData['action'] = $viewBtn . $deleteBtn . $deleteForm;
+
+                $checked = ($loan->status === 'approved') ? 'checked' : '';
+                $nestedData['approve'] = '<form action="'.route('loan.toggle-status', $loan->id).'" method="POST">'.csrf_field().'<label class="switch"><input type="checkbox" name="status" onchange="this.form.submit()" '.$checked.'><span class="slider"></span></label></form>';
+
+                $data[] = $nestedData;
+            }
+        }
+
+        $json_data = [
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data
+        ];
+
+        return response()->json($json_data);
     }
+
+    return view('admin.loan_application.all');
+}
+
+
+
+    private function  formatStatus($status){
+        if ($status === 'approved') {
+            return '<span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.1 rounded-full dark:bg-green-900 dark:text-green-300"><span class="w-2 h-2 bg-green-500 rounded-full"></span> Approved</span>';
+        } elseif ($status === 'not_approved') {
+            return '<span class="inline-flex items-center bg-yellow-100 text-green-800 text-xs font-medium px-2.5 py-0.1 rounded-full dark:bg-green-900 dark:text-green-300"><span class="w-2 h-2 bg-green-500 rounded-full"></span> Pending</span>';
+        }
+        return $status;
+
+    }
+
+
+
+
+
+
+
+
+
 
     public function allApprovedLoans(){
         $loan= DB::table('loan_applications')->where('status','approved')->get();
@@ -112,6 +297,9 @@ class LoanController extends Controller
         toastr ()->success('Loan Status Updated Successfully','Congrats');
         return redirect()->back();
 
+
+
+
     }
 
     public function approvedLoan(){
@@ -125,8 +313,9 @@ class LoanController extends Controller
     public function deleteLoanApplication($loan){
         $loan= LoanApplication::findOrFail($loan);
         $loan->delete();
-        toastr ()->success('Loan Application Deleted Successfully','Congrats');
-        return redirect()->back();
+        // toastr ()->success('Loan Application Deleted Successfully','Congrats');
+        // return redirect()->back();
+        return response()->json(['success' => 'Loan Application deleted successfully.']);
 
     }
 

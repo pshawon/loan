@@ -6,6 +6,10 @@
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.min.css" rel="stylesheet">
+
+
+
+
 </head>
 <body>
     <div class="flex flex-col h-screen bg-gray-100">
@@ -35,6 +39,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.all.min.js"></script>
+
 
 
     <script>
@@ -73,7 +78,14 @@
     }
 </script>
 
+
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
 <script>
+    $(document).ready(function() {
+        $('#loanTable').DataTable();
+    });
+
     function confirmDelete(userId) {
         Swal.fire({
             title: "Confirm Delete",
